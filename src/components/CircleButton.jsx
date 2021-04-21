@@ -1,20 +1,26 @@
+/* eslint-disable no-use-before-define */
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { string } from 'prop-types';
+import { string, shape } from 'prop-types';
 
 export default function CircleButton(props) {
-  const { children } = props;
+  const { children, style } = props;
 
   return (
-    <View style={styles.circleButton}>
+    <View style={[styles.circleButton, style]}>
       <Text style={styles.circleButtonLabel}>{children}</Text>
     </View>
   );
 }
 
-CircleButton.prototype = {
+CircleButton.propTypes = {
   children: string.isRequired,
-}
+  style: shape(),
+};
+
+CircleButton.defaultProps = {
+  style: null,
+};
 
 const styles = StyleSheet.create({
   circleButton: {
@@ -27,12 +33,12 @@ const styles = StyleSheet.create({
     position: 'absolute',
     right: 40,
     bottom: 40,
-    shadowColor: 'black', 
+    shadowColor: 'black',
     shadowOffset: { width: 0, height: 8 }, // 影の位置
     shadowOpacity: 0.25, // 影の透明度
-    shadowRadius: 8, 
+    shadowRadius: 8,
     elevation: 8, // Androidのみ対応しているshadow プロパティ
-   },
+  },
   circleButtonLabel: {
     color: 'white',
     fontSize: 40,
