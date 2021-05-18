@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, TextInput, TouchableOpacity,
 } from 'react-native';
@@ -8,12 +8,29 @@ import Button from '../components/Button';
 
 export default function LogInScreen(props) {
   const { navigation } = props;
+  const [email, setEmail] = useState(''); // この空文字は、emailの初期値を表す
+  const [password, setPassword] = useState('');
   return (
     <View style={styles.container}>
       <View style={styles.inner}>
         <Text style={styles.title}>Log In</Text>
-        <TextInput style={styles.input} value="Email Address" />
-        <TextInput style={styles.input} value="Password" />
+        <TextInput
+          style={styles.input}
+          value={email}
+          onChangeText={(text) => { setEmail(text); }}
+          autoCapitalize="none" // iphoneの頭文字が大文字になるのを防ぐオプション
+          keyboardType="email-address" // emailAddress を入力することに適したキーボードを設定してくれる
+          placeholder="Email Address" // 入力フォームに薄字で文字列を表示してくれる
+          textContentType="emailAddress" // iOSの方で自動的にキーチェインから値をとってくれる,自動保管してくれる
+        />
+        <TextInput
+          style={styles.input}
+          value={password}
+          onChangeText={(text) => { setPassword(text); }}
+          placeholder="Password"
+          secureTextEntry // パスワード入力後に伏字にしてくれる
+          textContentType="password"
+        />
         <Button
           label="Submit"
           onPress={() => {
