@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   View, Text, StyleSheet, TextInput, TouchableOpacity, Alert,
 } from 'react-native';
@@ -11,6 +11,18 @@ export default function LogInScreen(props) {
   const { navigation } = props;
   const [email, setEmail] = useState(''); // この空文字は、emailの初期値を表す
   const [password, setPassword] = useState('');
+
+  useEffect(() => { // props が変更される度に実行されてしまう
+    const unsubscribe = firebase.auth().onAuthStateChanged((user) => { // Login状態を監視してくれる
+      if (user) { // login状態であれば、実行される処理
+        navigation.reset({
+          index: 0,
+          routes: [{ name: 'MemoList' }],
+        });
+      }
+    });
+    return unsubscribe; // ログイン監視状態をキャンセルしてくれる
+  }, []); // , [] を追加すれば、画面が表示された１回のみされる
 
   function handlePress() {
     firebase.auth().signInWithEmailAndPassword(email, password)
